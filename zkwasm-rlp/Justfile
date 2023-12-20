@@ -1,4 +1,4 @@
-wasm := "./pkg/zkwasm_rlp_bg.wasm"
+wasm := "./pkg/zkwasm_rlp_bg_opt.wasm"
 args := "-k 19 --function zkmain --param ./params --output ./output --wasm " + wasm
 proof := "./output/zkwasm.0.transcript.data"
 
@@ -8,10 +8,23 @@ cli := env_var_or_default("DELPHINUS_CLI", "delphinus-cli")
 build:
 	wasm-pack build --release
 
+# wasm-opt wasm file
+opt:
+	wasm-opt -Oz -o ./pkg/zkwasm_rlp_bg_opt.wasm ./pkg/zkwasm_rlp_bg.wasm
+
+# wasm-interp trace
+trace:
+	wasm-interp ./pkg/zkwasm_rlp_bg_opt.wasm --run-all-exports --trace > trace.log
+	wc -l trace.log
+
 # setup params
 setup:
 	rm -rf output
 	RUST_LOG=info {{cli}} {{args}} setup
+
+# dry-run
+dry-run:
+	RUST_LOG=info {{cli}} {{args}} dry-run
 
 # generate proof
 prove:
