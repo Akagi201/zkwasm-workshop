@@ -1,4 +1,4 @@
-# hello-world
+# zkwasm-rlp
 
 ## Build
 

@@ -1,0 +1,25 @@
+wasm := "./pkg/zkwasm_rlp_bg.wasm"
+args := "-k 19 --function zkmain --param ./params --output ./output --wasm " + wasm
+proof := "./output/zkwasm.0.transcript.data"
+
+cli := env_var_or_default("DELPHINUS_CLI", "delphinus-cli")
+
+# build wasm
+build:
+	wasm-pack build --release
+
+# setup params
+setup:
+	rm -rf output
+	RUST_LOG=info {{cli}} {{args}} setup
+
+# generate proof
+prove:
+	RUST_LOG=info {{cli}} {{args}} single-prove
+
+# verify proof
+verify:
+	RUST_LOG=info {{cli}} {{args}} single-verify
+
+# full test
+test: build setup prove verify

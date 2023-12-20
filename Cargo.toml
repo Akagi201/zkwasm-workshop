@@ -1,5 +1,5 @@
 [workspace]
 members = [
-    "hello-world",
+    "zkwasm-rlp",
 ]
 resolver = "2"
