@@ -1,7 +1,11 @@
 # zkwasm-rlp
 
-## Build
+## Run
 
 ```sh
-wasm-pack build --release
+just -l
+just build
+just opt
+just setup
+just verify
 ```

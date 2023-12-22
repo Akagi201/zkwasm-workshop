@@ -34,5 +34,9 @@ prove:
 verify:
 	RUST_LOG=info {{cli}} {{args}} single-verify
 
+# clean artifacts
+clean:
+	rm -rf output params pkg *.json
+
 # full test
-test: build setup prove verify
+test: build opt setup prove verify
